@@ -1,0 +1,189 @@
+---
+- hosts: manager
+  become: yes
+  gather_facts: False
+  tasks:
+
+    - name: Ensure traefik_vol folder exists
+      file:
+        path: /mnt/gluster/traefik_vol
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure /mnt/gluster/mautic.src folder exists for mautic
+      file:
+        path: /mnt/gluster/mautic.src
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: 0755
+
+    - name: Ensure /mnt/gluster/mautic.mariadb_vol folder exists for mautic
+      file:
+        path: /mnt/gluster/mautic.mariadb_vol
+        state: directory
+        owner: 999
+        group: docker
+        mode: 0755
+
+    - name: Ensure /mnt/gluster/mautic.mariadb_dump folder exists for mautic
+      file:
+        path: /mnt/gluster/mautic.mariadb_dump
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure /mnt/gluster/mautic.conf folder exists for mautic
+      file:
+        path: /mnt/gluster/mautic.conf
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure /mnt/gluster/filter.d folder exists for fail2ban
+      file:
+        path: /mnt/gluster/filter.d
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure /mnt/gluster/dd-agent-conf.d folder exists
+      file:
+        path: /mnt/gluster/dd-agent-conf.d
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure hls folder exists
+      file:
+        path: /mnt/gluster/hls
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure hlsdata folder exists
+      file:
+        path: /mnt/gluster/hlsdata
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure hlsdata/rec folder exists
+      file:
+        path: /mnt/gluster/hlsdata/rec
+        state: directory
+        owner: root
+        group: root
+        mode: 0777
+
+    - name: Ensure hlsdata/hls folder exists
+      file:
+        path: /mnt/gluster/hlsdata/hls
+        state: directory
+        owner: root
+        group: root
+        mode: 0777
+
+    - name: Ensure thecloudseminar.com wp-content folder exists
+      file:
+        path: /mnt/gluster/thecloudseminar.com
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: 0755
+    - name: Ensure thecloudseminar.com mariadb_vol folder exists
+      file:
+        path: /mnt/gluster/thecloudseminar.com.mariadb_vol
+        state: directory
+        owner: 999
+        group: docker
+        mode: 0755
+    - name: Ensure thecloudseminar.com.mariadb_dump folder exists
+      file:
+        path: /mnt/gluster/thecloudseminar.com.mariadb_dump
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure cloudgenius.co wp-content folder exists
+      file:
+        path: /mnt/gluster/cloudgenius.co
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: 0755
+    - name: Ensure cloudgenius.co mariadb_vol folder exists
+      file:
+        path: /mnt/gluster/cloudgenius.co.mariadb_vol
+        state: directory
+        owner: 999
+        group: docker
+        mode: 0755
+    - name: Ensure cloudgenius.co.mariadb_dump folder exists
+      file:
+        path: /mnt/gluster/cloudgenius.co.mariadb_dump
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure be.a.cloudgeni.us wp-content folder exists
+      file:
+        path: /mnt/gluster/be.a.cloudgeni.us
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: 0755
+    - name: Ensure be.a.cloudgeni.us mariadb_vol folder exists
+      file:
+        path: /mnt/gluster/be.a.cloudgeni.us.mariadb_vol
+        state: directory
+        owner: 999
+        group: docker
+        mode: 0755
+    - name: Ensure be.a.cloudgeni.us.mariadb_dump folder exists
+      file:
+        path: /mnt/gluster/be.a.cloudgeni.us.mariadb_dump
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Ensure directories are 0755
+      command: find {{ item }} -type d ! -perm 0755 -exec chmod 0755 {} \;
+      with_items:
+        - "/mnt/gluster/traefik_vol"
+        - "/mnt/gluster/hls"
+        - "/mnt/gluster/thecloudseminar.com"
+        - "/mnt/gluster/thecloudseminar.com.mariadb_vol"
+        - "/mnt/gluster/thecloudseminar.com.mariadb_dump"
+        - "/mnt/gluster/cloudgenius.co"
+        - "/mnt/gluster/cloudgenius.co.mariadb_vol"
+        - "/mnt/gluster/cloudgenius.co.mariadb_dump"
+        - "/mnt/gluster/be.a.cloudgeni.us"
+        - "/mnt/gluster/be.a.cloudgeni.us.mariadb_vol"
+        - "/mnt/gluster/be.a.cloudgeni.us.mariadb_dump"
+
+    - name: Ensure files are 0644
+      command: find {{ item }} -type f ! -perm 0644 -exec chmod 0644 {} \;
+      with_items:
+        - "/mnt/gluster/traefik_vol"
+        - "/mnt/gluster/hls"
+        - "/mnt/gluster/thecloudseminar.com"
+        - "/mnt/gluster/thecloudseminar.com.mariadb_vol"
+        - "/mnt/gluster/thecloudseminar.com.mariadb_dump"
+        - "/mnt/gluster/cloudgenius.co"
+        - "/mnt/gluster/cloudgenius.co.mariadb_vol"
+        - "/mnt/gluster/cloudgenius.co.mariadb_dump"
+        - "/mnt/gluster/be.a.cloudgeni.us"
+        - "/mnt/gluster/be.a.cloudgeni.us.mariadb_vol"
+        - "/mnt/gluster/be.a.cloudgeni.us.mariadb_dump"

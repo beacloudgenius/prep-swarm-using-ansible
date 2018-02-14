@@ -1,0 +1,14 @@
+[manager]
+production-manager-0 ansible_host=45.76.244.137
+[manager:vars]
+ansible_user=root
+ansible_private_key_file=~/.ssh/id_rsa
+ansible_python_interpreter=/usr/bin/python3
+
+[worker]
+production-worker-0 ansible_host=45.76.243.102
+production-worker-1 ansible_host=45.32.226.90
+[worker:vars]
+ansible_user=root
+ansible_private_key_file=~/.ssh/id_rsa
+ansible_python_interpreter=/usr/bin/python3

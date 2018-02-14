@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: install docker on every node
+      shell: curl -sSL https://get.docker.com/ | sh
+
+    - name: ensure daemon.json file exists so we can enable experimental mode
+      file: path=/etc/docker/daemon.json state=touch
+
+    - lineinfile:
+        path: /etc/docker/daemon.json
+        line: '{"experimental":true}'
+    - service:
+        name: docker
+        state: restarted

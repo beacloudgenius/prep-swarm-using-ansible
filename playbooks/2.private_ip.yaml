@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+    - debug: var=hostvars[inventory_hostname]['ansible_ens7']['ipv4']['address']
+#    - debug: var=hostvars[inventory_hostname]['ansible_all_ipv4_addresses']
+#    - debug: var=ansible_all_ipv4_addresses
+#    - debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['interface']
+    - set_fact:
+        public_ip: "{{ansible_default_ipv4.address }}"
+    - debug: var=public_ip
+    - set_fact: # the last octet of the public_ip
+        last_octet: "{{public_ip.split('.')[3]}}"
+#    - set_fact:
+#        NewIP: "{{ public_ip.split('.')[0] }}.{{ public_ip.split('.')[1] }}.{{ public_ip.split('.')[2] }}.{{ Y }}"
+
+    - name: insert/update ens7 configuration stanza in /etc/network/interfaces
+      blockinfile:
+        path: /etc/network/interfaces
+        block: |
+          auto ens7
+          iface ens7 inet static
+            address 10.99.0.{{ last_octet }}
+            netmask 255.255.0.0
+            mtu 1450
+    - command: ifup ens7
+    - debug: var=hostvars[inventory_hostname]['ansible_ens7']['ipv4']['address']
+
+#   https://www.vultr.com/docs/configuring-private-network
+#   (it might be better to copy files into /etc/network/interfaces.d/)

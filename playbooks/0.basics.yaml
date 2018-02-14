@@ -1,0 +1,29 @@
+---
+- hosts: manager
+  gather_facts: False
+  become: true
+  tasks:
+    - name: setup crontab
+      script: ../scripts/cron.sh
+
+- hosts: all
+  gather_facts: False
+  become: true
+
+  tasks:
+    - name: setup swap space on every node
+      script: ../scripts/swap.sh
+    - name: setup ctop on every node
+      script: ../scripts/ctop.sh
+    - name: Upgrade all packages to the latest version
+      apt: update_cache=yes upgrade=dist
+#    - name: setup kernel parameters for docker on all nodes
+#      script: ../scripts/kernelparams.sh
+    - name: setup kernel parameters for docker on all nodes
+      lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX='
+        line: 'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"'
+        state: present
+    - name: /usr/sbin/update-grub
+      command: /usr/sbin/update-grub
