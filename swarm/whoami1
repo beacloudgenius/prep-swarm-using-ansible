@@ -1,0 +1,24 @@
+docker service create \
+    --name whoami1 \
+    --label traefik.port=80 \
+    --network cg \
+    --label traefik.backend.loadbalancer.sticky=true \
+    emilevauge/whoami
+
+
+
+
+curl -H Host:whoami1.thecloudseminar.com http://144.202.80.73
+
+
+
+
+docker service scale whoami1=5
+
+
+curl -c cookie.txt -H Host:whoami1.thecloudseminar.com http://144.202.80.73
+
+cat cookie.txt
+
+curl -b cookie.txt -H Host:whoami1.thecloudseminar.com http://144.202.80.73
+curl -b cookie.txt -H Host:whoami1.thecloudseminar.com http://144.202.80.73

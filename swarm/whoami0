@@ -1,0 +1,21 @@
+docker service create \
+    --name whoami0 \
+    --label traefik.port=80 \
+    --network cg \
+    emilevauge/whoami
+
+
+
+curl -H Host:whoami0.thecloudseminar.com http://144.202.80.73
+
+
+
+
+
+docker service scale whoami0=5
+
+
+
+curl -H Host:whoami0.thecloudseminar.com http://144.202.80.73
+curl -H Host:whoami0.thecloudseminar.com http://144.202.80.73
+curl -H Host:whoami0.thecloudseminar.com http://144.202.80.73

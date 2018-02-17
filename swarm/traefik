@@ -1,0 +1,14 @@
+docker network create cg -d overlay
+
+docker service create \
+    --name traefik \
+    --constraint=node.role==manager \
+    --publish 80:80 --publish 8080:8080 \
+    --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+    --network cg \
+    traefik \
+    --docker \
+    --docker.swarmmode \
+    --docker.domain=thecloudseminar.com \
+    --docker.watch \
+    --api
