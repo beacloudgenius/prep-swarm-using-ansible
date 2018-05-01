@@ -2,7 +2,7 @@ Prerequisites
 
 ansible
 
-    You already have it your Cloud Genius workstation
+    You already have it in your Cloud Genius workstation
 
 jq
 
@@ -12,7 +12,7 @@ Send your public key to Vultr Cloud
 
     cat ~/.ssh/id_rsa.pub
 
-Setup private network with subnet 
+Setup private network with a subnet
 
     CIDR 10.99.0.0/24
 
