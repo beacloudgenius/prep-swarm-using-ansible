@@ -12,10 +12,15 @@ Send your public key to Vultr Cloud
 
     cat ~/.ssh/id_rsa.pub
 
+Setup private network with subnet 
+
+    CIDR 10.99.0.0/24
+
 Get three debian boxes there with private networking enabled
-  manager0
-  worker0
-  worker1
+
+    manager0
+    worker0
+    worker1
 
 Populate `inventory` with ip addresses of these three boxes
 
